@@ -1,9 +1,6 @@
 package application.Controller;
 
 import java.util.Random;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
