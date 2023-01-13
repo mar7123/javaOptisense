@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.MainFormCtr">
+<BorderPane fx:id="MainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.MainFormCtr">
    <top>
       <AnchorPane prefHeight="13.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -19,8 +19,8 @@
                 </Menu>
                 <Menu fx:id="TransactionMenu" mnemonicParsing="false" text="My Transaction">
                   <items>
-                    <MenuItem fx:id="BuyMenuItem" mnemonicParsing="false" text="Buy T-Shirt" />
-                        <MenuItem fx:id="TransactionHistoryMenuItem" mnemonicParsing="false" text="View Transaction History" />
+                    <MenuItem fx:id="BuyMenuItem" mnemonicParsing="false" onAction="#BuyMenuPressed" text="Buy T-Shirt" />
+                        <MenuItem fx:id="TransactionHistoryMenuItem" mnemonicParsing="false" onAction="#TransactionHistoryPressed" text="View Transaction History" />
                   </items>
                 </Menu>
               </menus>

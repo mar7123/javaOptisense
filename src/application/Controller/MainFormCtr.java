@@ -12,34 +12,58 @@ import javafx.stage.Stage;
 
 public class MainFormCtr {
 
-    @FXML
-    private MenuItem BuyMenuItem;
+	@FXML
+	private MenuItem BuyMenuItem;
 
-    @FXML
-    private MenuItem SignOutMenuItem;
+	@FXML
+	private BorderPane MainBorderPane;
 
-    @FXML
-    private MenuItem TransactionHistoryMenuItem;
+	@FXML
+	private MenuItem SignOutMenuItem;
 
-    @FXML
-    private Menu TransactionMenu;
+	@FXML
+	private MenuItem TransactionHistoryMenuItem;
 
-    @FXML
-    private Menu UserMenu;
-    
-    void ifadmin(boolean flag) {
-    	if(flag) {
-    		UserMenu.setText("My Admin");
-    		TransactionMenu.getItems().clear();
-    		MenuItem ManageTShirt = new MenuItem();
-    		ManageTShirt.setText("Manage T-Shirt");
-    		TransactionMenu.getItems().add(ManageTShirt);
-    	}
+	@FXML
+	private Menu TransactionMenu;
+
+	@FXML
+	private Menu UserMenu;
+
+	void ifadmin(boolean flag) {
+		if (flag) {
+			UserMenu.setText("My Admin");
+			TransactionMenu.getItems().clear();
+			MenuItem ManageTShirt = new MenuItem();
+			ManageTShirt.setId("ManageTShirt");
+			ManageTShirt.setText("Manage T-Shirt");
+			TransactionMenu.getItems().add(ManageTShirt);
+		}
+	}
+
+	void setCenterPane(String viewname) {
+		try {
+			FXMLLoader xmlloader = new FXMLLoader();
+			xmlloader.setLocation(getClass().getResource("/application/view/" + viewname + ".fxml"));
+			MainBorderPane.setCenter((AnchorPane) xmlloader.load());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	void BuyMenuPressed(ActionEvent event) {
+		setCenterPane("BuyMenuItem");
+	}
+	
+	@FXML
+    void TransactionHistoryPressed(ActionEvent event) {
+		setCenterPane("TransactionHistoryMenuItem");
     }
-    
-    @FXML
-    void SignOutBttnPressed(ActionEvent event) {
-    	try {
+
+	@FXML
+	void SignOutBttnPressed(ActionEvent event) {
+		try {
 			Stage primaryStage = new Stage();
 			FXMLLoader xmlloader = new FXMLLoader();
 			xmlloader.setLocation(getClass().getResource("/application/view/LoginPanel.fxml"));
@@ -47,11 +71,11 @@ public class MainFormCtr {
 			Scene scene = new Scene(root, 600, 600);
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			
+
 			Stage formerStage = (Stage) SignOutMenuItem.getParentPopup().getOwnerWindow();
 			formerStage.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    }
+	}
 }
