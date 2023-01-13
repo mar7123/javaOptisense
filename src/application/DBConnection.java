@@ -1,6 +1,6 @@
 package application;
 
-import java.sql.DriverManager;
+import java.sql.*;
 
 public class DBConnection {
 	private static java.sql.Connection koneksi;
