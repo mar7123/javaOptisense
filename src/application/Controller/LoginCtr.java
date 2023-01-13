@@ -54,7 +54,10 @@ public class LoginCtr {
 				BorderPane root = (BorderPane) xmlloader.load();
 				Scene scene = new Scene(root, 600, 600);
 				primaryStage.setScene(scene);
+				MainFormCtr ctr = xmlloader.getController();
+				ctr.ifadmin(true);
 				primaryStage.show();
+				
 				Stage formerStage = (Stage) LoginButton.getScene().getWindow();
 				formerStage.close();
 			} catch (Exception e) {
