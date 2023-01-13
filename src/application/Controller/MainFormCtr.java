@@ -9,6 +9,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.geometry.Insets;
 
 public class MainFormCtr {
 
@@ -38,6 +39,9 @@ public class MainFormCtr {
 			ManageTShirt.setId("ManageTShirt");
 			ManageTShirt.setText("Manage T-Shirt");
 			TransactionMenu.getItems().add(ManageTShirt);
+			TransactionMenu.setOnAction(e -> {
+				setCenterPane("ManageTShirt");
+			});
 		}
 	}
 
@@ -45,7 +49,10 @@ public class MainFormCtr {
 		try {
 			FXMLLoader xmlloader = new FXMLLoader();
 			xmlloader.setLocation(getClass().getResource("/application/view/" + viewname + ".fxml"));
-			MainBorderPane.setCenter((AnchorPane) xmlloader.load());
+			AnchorPane centerPane = (AnchorPane) xmlloader.load();
+			Insets inset = new Insets(13, 0, 0, 0);
+			centerPane.setPadding(inset);
+			MainBorderPane.setCenter(centerPane);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

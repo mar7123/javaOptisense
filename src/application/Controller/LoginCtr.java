@@ -74,8 +74,11 @@ public class LoginCtr {
 						Scene scene = new Scene(root, 600, 600);
 						primaryStage.setScene(scene);
 						MainFormCtr ctr = xmlloader.getController();
-						ctr.ifadmin(true);
+						ctr.ifadmin(false);
 						primaryStage.show();
+						
+						Stage formerStage = (Stage) LoginButton.getScene().getWindow();
+						formerStage.close();
 		            } 
 		            
 		            else if (role.equals("Admin")) {
@@ -88,6 +91,9 @@ public class LoginCtr {
 						MainFormCtr ctr = xmlloader.getController();
 						ctr.ifadmin(true);
 						primaryStage.show();
+						
+						Stage formerStage = (Stage) LoginButton.getScene().getWindow();
+						formerStage.close();
 		            }
 		        } 
 		        
