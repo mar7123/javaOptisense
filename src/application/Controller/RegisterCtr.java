@@ -1,8 +1,11 @@
 package application.Controller;
 
 import java.util.Random;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,7 +35,7 @@ public class RegisterCtr{
     private RadioButton maleRadio;
 
     @FXML
-    private ComboBox<?> nationalityCombo;
+    private ComboBox<String> nationalityCombo;
 
     @FXML
     private PasswordField passwordField;
@@ -58,12 +61,16 @@ public class RegisterCtr{
         String id = "US-" + random.nextInt(1000) + (char)(random.nextInt(26) + 'A') + (char)(random.nextInt(26) + 'A');
         idField.setText(id);
         // Add options to the nationality combo box
-        nationalityCombo.getItems().removeAll(nationalityCombo.getItems());
-        nationalityCombo.getItems().addAll("America", "Indonesia", "Singapore");
-        nationalityCombo.getSelectionModel().select("America");
-        nationalityCombo.setStyle("Choose One");
+        ObservableList<String> options = FXCollections.observableArrayList("Choose One", "America", "Australia", "Brazil", "Indonesia", "Malaysia", "Singapore");
+        // Set the items of the ComboBox
+        nationalityCombo.setItems(options);
+
+        // Set the default selected value
+        nationalityCombo.setValue("Choose One");
+
+   
         
     }
 }
 
-}
+
