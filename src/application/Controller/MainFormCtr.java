@@ -42,7 +42,7 @@ public class MainFormCtr {
 			Orders.setText("Orders");
 			ManageMenu.getItems().clear();
 			ManageMenu.getItems().add(Orders);
-			ManageMenu.setOnAction(e -> {
+			Orders.setOnAction(e -> {
 				List<String> tablename = new ArrayList<String>();
 				tablename.add("products");
 //				setCenterPane("ManageTShirt");
