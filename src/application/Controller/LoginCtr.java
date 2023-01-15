@@ -46,69 +46,68 @@ public class LoginCtr {
 
 	@FXML
 	void LoginButtonPressed(ActionEvent event) {
-		 String username = UsernameField.getText();
-		    String password = PassField.getText();
-		    if (username.isEmpty() || password.isEmpty()) {
-		        WelcomeLabel.setText("Please fill in the username and password fields");
-		        return;
-		    }
+		String username = UsernameField.getText();
+		String password = PassField.getText();
+		if (username.isEmpty() || password.isEmpty()) {
+			WelcomeLabel.setText("Please fill in the username and password fields");
+			return;
+		}
 
-		    // Connect to the database
-		    
-		    try {
-		        
-		    	Connection c = DBConnection.getKoneksi();
-		      
-		        String sql = "SELECT * FROM users WHERE UserUsername = ? AND UserPassword = ?";
-		        PreparedStatement stmt = c.prepareStatement(sql);
-		        stmt.setString(1, username);
-		        stmt.setString(2, password);
-		        ResultSet rs = stmt.executeQuery();
-		        if (rs.next()) {
-		            String role = rs.getString("UserRole");
-		            if (role.equals("User")) {
-		            	Stage primaryStage = new Stage();
-						FXMLLoader xmlloader = new FXMLLoader();
-						xmlloader.setLocation(getClass().getResource("/application/view/MainForm.fxml"));
-						BorderPane root = (BorderPane) xmlloader.load();
-						Scene scene = new Scene(root, 600, 600);
-						primaryStage.setScene(scene);
-						MainFormCtr ctr = xmlloader.getController();
-						ctr.ifadmin(false);
-						primaryStage.show();
-						
-						Stage formerStage = (Stage) LoginButton.getScene().getWindow();
-						formerStage.close();
-		            } 
-		            
-		            else if (role.equals("Admin")) {
-		            	Stage primaryStage = new Stage();
-						FXMLLoader xmlloader = new FXMLLoader();
-						xmlloader.setLocation(getClass().getResource("/application/view/MainForm.fxml"));
-						BorderPane root = (BorderPane) xmlloader.load();
-						Scene scene = new Scene(root, 600, 600);
-						primaryStage.setScene(scene);
-						MainFormCtr ctr = xmlloader.getController();
-						ctr.ifadmin(true);
-						primaryStage.show();
-						
-						Stage formerStage = (Stage) LoginButton.getScene().getWindow();
-						formerStage.close();
-		            }
-		        } 
-		        
-		        else 
-		        {
-		            WelcomeLabel.setText("Incorrect username or password");
-		        }
-		        
-		    } catch (SQLException ex) {
-		        ex.printStackTrace();
-		        WelcomeLabel.setText("Error: " + ex.getMessage());
-		    } catch (IOException ex) {
-		        ex.printStackTrace();
-		        WelcomeLabel.setText("Error: " + ex.getMessage());
-		    } 
+		// Connect to the database
+
+		try {
+
+			Connection c = DBConnection.getKoneksi();
+
+			String sql = "SELECT * FROM users WHERE UserUsername = ? AND UserPassword = ?";
+			PreparedStatement stmt = c.prepareStatement(sql);
+			stmt.setString(1, username);
+			stmt.setString(2, password);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				String role = rs.getString("UserRole");
+				if (role.equals("User")) {
+					Stage primaryStage = new Stage();
+					FXMLLoader xmlloader = new FXMLLoader();
+					xmlloader.setLocation(getClass().getResource("/application/view/MainForm.fxml"));
+					BorderPane root = (BorderPane) xmlloader.load();
+					Scene scene = new Scene(root, 600, 600);
+					primaryStage.setScene(scene);
+					MainFormCtr ctr = xmlloader.getController();
+					ctr.ifadmin(false);
+					primaryStage.show();
+
+					Stage formerStage = (Stage) LoginButton.getScene().getWindow();
+					formerStage.close();
+				}
+
+				else if (role.equals("Admin")) {
+					Stage primaryStage = new Stage();
+					FXMLLoader xmlloader = new FXMLLoader();
+					xmlloader.setLocation(getClass().getResource("/application/view/MainForm.fxml"));
+					BorderPane root = (BorderPane) xmlloader.load();
+					Scene scene = new Scene(root, 600, 600);
+					primaryStage.setScene(scene);
+					MainFormCtr ctr = xmlloader.getController();
+					ctr.ifadmin(true);
+					primaryStage.show();
+
+					Stage formerStage = (Stage) LoginButton.getScene().getWindow();
+					formerStage.close();
+				}
+			}
+
+			else {
+				WelcomeLabel.setText("Incorrect username or password");
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			WelcomeLabel.setText("Error: " + ex.getMessage());
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			WelcomeLabel.setText("Error: " + ex.getMessage());
+		}
 
 	}
 
