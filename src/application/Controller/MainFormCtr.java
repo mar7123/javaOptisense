@@ -21,32 +21,28 @@ import java.util.ArrayList;
 public class MainFormCtr {
 
 	@FXML
-	private MenuItem BuyMenuItem;
+    private MenuItem LogOutMenuItem;
 
-	@FXML
-	private BorderPane MainBorderPane;
+    @FXML
+    private BorderPane MainBorderPane;
 
-	@FXML
-	private MenuItem SignOutMenuItem;
+    @FXML
+    private Menu ManageMenu;
 
-	@FXML
-	private MenuItem TransactionHistoryMenuItem;
+    @FXML
+    private MenuItem SensorMenuItem;
 
-	@FXML
-	private Menu TransactionMenu;
+    @FXML
+    private Menu UserMenu;
 
-	@FXML
-	private Menu UserMenu;
-
-	void ifadmin(boolean flag) {
-		if (flag) {
-			UserMenu.setText("My Admin");
-			TransactionMenu.getItems().clear();
-			MenuItem ManageTShirt = new MenuItem();
-			ManageTShirt.setId("ManageTShirt");
-			ManageTShirt.setText("Manage T-Shirt");
-			TransactionMenu.getItems().add(ManageTShirt);
-			TransactionMenu.setOnAction(e -> {
+	void isvendor(boolean flag) {
+		if (!flag) {
+			MenuItem Orders = new MenuItem();
+			Orders.setId("OrderMenuItem");
+			Orders.setText("Orders");
+			ManageMenu.getItems().clear();
+			ManageMenu.getItems().add(Orders);
+			ManageMenu.setOnAction(e -> {
 				List<String> tablename = new ArrayList<String>();
 				tablename.add("products");
 //				setCenterPane("ManageTShirt");
@@ -84,7 +80,7 @@ public class MainFormCtr {
 	}
 
 	@FXML
-	void BuyMenuPressed(ActionEvent event) {
+	void SensorMenuPressed(ActionEvent event) {
 //		List<String> tablename = new ArrayList<String>();
 //		tablename.add("products");
 //		tablename.add("cart");
@@ -102,15 +98,7 @@ public class MainFormCtr {
 	}
 
 	@FXML
-	void TransactionHistoryPressed(ActionEvent event) {
-		List<String> tablename = new ArrayList<String>();
-		tablename.add("headertransaction");
-		tablename.add("detailtransaction");
-//		setCenterPane("TransactionHistoryMenuItem");
-	}
-
-	@FXML
-	void SignOutBttnPressed(ActionEvent event) {
+	void LogOutBttnPressed(ActionEvent event) {
 		try {
 			Stage primaryStage = new Stage();
 			FXMLLoader xmlloader = new FXMLLoader();
@@ -120,7 +108,7 @@ public class MainFormCtr {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 
-			Stage formerStage = (Stage) SignOutMenuItem.getParentPopup().getOwnerWindow();
+			Stage formerStage = (Stage) LogOutMenuItem.getParentPopup().getOwnerWindow();
 			formerStage.close();
 		} catch (Exception e) {
 			e.printStackTrace();

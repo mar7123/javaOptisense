@@ -74,7 +74,7 @@ public class LoginCtr {
 					Scene scene = new Scene(root, 600, 600);
 					primaryStage.setScene(scene);
 					MainFormCtr ctr = xmlloader.getController();
-					ctr.ifadmin(false);
+					ctr.isvendor(false);
 					primaryStage.show();
 
 					Stage formerStage = (Stage) LoginButton.getScene().getWindow();
@@ -89,7 +89,7 @@ public class LoginCtr {
 					Scene scene = new Scene(root, 600, 600);
 					primaryStage.setScene(scene);
 					MainFormCtr ctr = xmlloader.getController();
-					ctr.ifadmin(true);
+					ctr.isvendor(true);
 					primaryStage.show();
 
 					Stage formerStage = (Stage) LoginButton.getScene().getWindow();

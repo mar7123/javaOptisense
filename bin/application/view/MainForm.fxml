@@ -6,33 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="MainBorderPane" maxHeight="-Infinity"
-	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-	prefHeight="400.0" prefWidth="600.0"
-	xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="application.Controller.MainFormCtr">
+<BorderPane fx:id="MainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.MainFormCtr">
 	<top>
-		<AnchorPane prefHeight="13.0" prefWidth="600.0"
-			BorderPane.alignment="CENTER">
+		<AnchorPane prefHeight="13.0" prefWidth="600.0" BorderPane.alignment="CENTER">
 			<children>
-				<MenuBar layoutX="23.0" layoutY="10.0"
-					AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+				<MenuBar layoutX="23.0" layoutY="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
 					<menus>
-						<Menu fx:id="UserMenu" mnemonicParsing="false" text="My User">
+						<Menu fx:id="UserMenu" mnemonicParsing="false" text="User Menu">
 							<items>
-								<MenuItem fx:id="SignOutMenuItem"
-									mnemonicParsing="false" onAction="#SignOutBttnPressed"
-									text="Sign Out" />
+								<MenuItem fx:id="LogOutMenuItem" mnemonicParsing="false" onAction="#LogOutBttnPressed" text="Log Out" />
 							</items>
 						</Menu>
-						<Menu fx:id="TransactionMenu" mnemonicParsing="false"
-							text="My Transaction">
+						<Menu fx:id="ManageMenu" mnemonicParsing="false" text="Manage Menu">
 							<items>
-								<MenuItem fx:id="BuyMenuItem" mnemonicParsing="false"
-									onAction="#BuyMenuPressed" text="Buy T-Shirt" />
-								<MenuItem fx:id="TransactionHistoryMenuItem"
-									mnemonicParsing="false" onAction="#TransactionHistoryPressed"
-									text="View Transaction History" />
+								<MenuItem fx:id="SensorMenuItem" mnemonicParsing="false" onAction="#SensorMenuPressed" text="Sensors" />
 							</items>
 						</Menu>
 					</menus>
