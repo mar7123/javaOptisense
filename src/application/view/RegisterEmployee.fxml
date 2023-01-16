@@ -38,7 +38,7 @@
          </font>
       </Text>
       <TextField fx:id="GeneratedIDField" editable="false" layoutX="116.0" layoutY="388.0" opacity="0.53" prefHeight="25.0" prefWidth="201.0" />
-      <ComboBox fx:id="CompanyIDCombo" layoutX="116.0" layoutY="157.0" prefHeight="25.0" prefWidth="90.0" />
+      <ComboBox fx:id="CompanyIDCombo" layoutX="89.0" layoutY="157.0" onContextMenuRequested="#onSelectedOptionCompanyID" prefHeight="25.0" prefWidth="117.0" visibleRowCount="20" />
       <Text fx:id="CompanyNameLabel" fill="WHITE" layoutX="217.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CompanyName">
          <font>
             <Font size="14.0" />
@@ -49,7 +49,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Text>
-      <ComboBox fx:id="PositionCombo" layoutX="116.0" layoutY="278.0" prefHeight="25.0" prefWidth="201.0" />
+      <ComboBox fx:id="PositionCombo" layoutX="116.0" layoutY="278.0" onMouseClicked="#onSelectedOptionPosition" prefHeight="25.0" prefWidth="201.0" />
       <PasswordField fx:id="PassField" layoutX="113.0" layoutY="334.0" prefHeight="25.0" prefWidth="201.0" />
       <Text fx:id="CompanyRoleLabel1" fill="WHITE" layoutX="185.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
          <font>
