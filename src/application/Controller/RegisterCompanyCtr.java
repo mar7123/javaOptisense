@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -114,17 +115,18 @@ public class RegisterCompanyCtr {
             // Show a success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Company has been registered successfully.");
             alert.show();
-
-            // Close the register company form and open the register employee form
-            RegisterButton.getScene().getWindow().hide();
-            openRegisterEmployeeForm();
+         
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        CompanyNameField.setText("");
+        GeneratedCodeField.setText("");
+        
+        
     }
 
     @FXML
-    void onCompanyNameFieldChanged(MouseEvent event){
+    void onCompanyNameFieldChanged(){
     	String companyName = CompanyNameField.getText();
         if (companyName.length() >= 2) {
             // Generate company code
@@ -177,6 +179,14 @@ public class RegisterCompanyCtr {
         }
     	
     }
+    
+    @FXML
+    void onKeyTypeCompanyName(KeyEvent event) {
+    	onCompanyNameFieldChanged();
+    }
+
+    
+    
 }
     
     

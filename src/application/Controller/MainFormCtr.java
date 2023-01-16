@@ -1,9 +1,12 @@
 package application.Controller;
 
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -40,17 +43,16 @@ public class MainFormCtr {
 			ManageMenu.getItems().add(Orders);
 			Orders.setOnAction(odr -> {
 				try {
-					FXMLLoader xmlloader = new FXMLLoader();
-					xmlloader.setLocation(getClass().getResource("/application/view/OrderForm.fxml"));
-					VBox centerPane = (VBox) xmlloader.load();
-					Insets inset = new Insets(13, 0, 0, 0);
-					centerPane.setPadding(inset);
-					SensorFormCtr ctr = xmlloader.getController();
-					ctr.loadInterface();
-					MainBorderPane.setCenter(centerPane);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/OrderForm.fxml"));
+		            Parent root = loader.load();
+		            Scene scene = new Scene(root);
+		            Stage stage = new Stage();
+		            stage.setScene(scene);
+		            stage.setTitle("Order Form");
+		            stage.show();
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
 			});
 		}
 	}
@@ -58,34 +60,30 @@ public class MainFormCtr {
 	@FXML
 	void SensorMenuPressed(ActionEvent event) {
 		try {
-			FXMLLoader xmlloader = new FXMLLoader();
-			xmlloader.setLocation(getClass().getResource("/application/view/SensorForm.fxml"));
-			VBox centerPane = (VBox) xmlloader.load();
-			Insets inset = new Insets(13, 0, 0, 0);
-			centerPane.setPadding(inset);
-			SensorFormCtr ctr = xmlloader.getController();
-			ctr.loadInterface();
-			MainBorderPane.setCenter(centerPane);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/SensorForm.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Sensor Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	@FXML
 	void LogOutBttnPressed(ActionEvent event) {
-		try {
-			Stage primaryStage = new Stage();
-			FXMLLoader xmlloader = new FXMLLoader();
-			xmlloader.setLocation(getClass().getResource("/application/view/LoginPanel.fxml"));
-			AnchorPane root = (AnchorPane) xmlloader.load();
-			Scene scene = new Scene(root, 600, 600);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-
-			Stage formerStage = (Stage) LogOutMenuItem.getParentPopup().getOwnerWindow();
-			formerStage.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		 try {
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/LoginPanel.fxml"));
+	            Parent root = loader.load();
+	            Scene scene = new Scene(root);
+	            Stage stage = new Stage();
+	            stage.setScene(scene);
+	            stage.setTitle("Login Panel");
+	            stage.show();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
 	}
 }

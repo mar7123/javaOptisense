@@ -103,6 +103,7 @@ public class RegisterEmployeeCtr {
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                 	CompanyNameLabel.setText(resultSet.getString("CompanyName"));
+                	onCompanyAndPositionSelected();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -112,26 +113,31 @@ public class RegisterEmployeeCtr {
     
     @FXML
     void onCompanyAndPositionSelected() {
-        String companyCode = CompanyIDCombo.getValue();
+    	String companyCode = CompanyIDCombo.getValue();
         String position = PositionCombo.getValue();
-        if (companyCode != null && position != null) {
-            // Generate employee ID
-            String employeeID = companyCode + position;
-            try {
-            	Connection connection = DBConnection.getKoneksi();
-                PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM employees WHERE EmployeeID LIKE ?");
-                statement.setString(1, employeeID + "%");
-                ResultSet resultSet = statement.executeQuery();
-                if (resultSet.next()) {
-                    int employeeCount = resultSet.getInt(1);
-                    employeeID += String.format("%02d", employeeCount + 1);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+
+        if (companyCode == null || position == null) {
+            return;
+        }
+
+        try {
+            // Get the position index in the list
+            int positionIndex = PositionCombo.getItems().indexOf(position);
+            // Get the current employee count in the company
+            Connection connection = DBConnection.getKoneksi();
+            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM employees WHERE CompanyCode = ?");
+            statement.setString(1, companyCode);
+            ResultSet result = statement.executeQuery();
+            result.next();
+            int employeeCount = result.getInt(1);
+
+            // Generate the employee ID
+            String employeeID = companyCode + String.format("%02d", positionIndex) + String.format("%04d", employeeCount + 1);
             GeneratedIDField.setText(employeeID);
-            }
-     }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void LoginEmployeeHLPressed(ActionEvent event) {
@@ -152,7 +158,7 @@ public class RegisterEmployeeCtr {
 
     @FXML
     void RegisterButtonPressed(ActionEvent event) {
-    	 String companyCode = CompanyIDCombo.getValue();
+    	 	String companyCode = CompanyIDCombo.getValue();
     	    String fullName = FullNameField.getText();
     	    String position = PositionCombo.getValue();
     	    String password = PassField.getText();
@@ -193,21 +199,18 @@ public class RegisterEmployeeCtr {
     	        statement.setString(4, password);
     	        statement.setString(5, fullName);
     	        statement.executeUpdate();
+    	        
+    	     // Show a success message
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Company has been registered successfully.");
+                alert.show();
+        	  
     	    } catch (SQLException e) {
     	        e.printStackTrace();
     	    }
-    	    // Close the Register Employee form and open the Employee Login form
-    	    
-    	    RegisterButton.getScene().getWindow().hide();
-    	    try {
-    	        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("employee_login.fxml"));
-    	        Parent root1 = (Parent) fxmlLoader.load();
-    	        Stage stage = new Stage();
-    	        stage.setScene(new Scene(root1));
-    	        stage.show();
-    	    } catch (IOException e) {
-    	        e.printStackTrace();
-    	    }
+         
+    	    FullNameField.setText("");
+    	    PassField.setText("");
+    	    GeneratedIDField.setText("");
     	}
     	    
 
@@ -230,7 +233,20 @@ public class RegisterEmployeeCtr {
 
     @FXML
     void onCompanyNameFieldChanged(MouseEvent event) {
+    	onCompanyAndPositionSelected();
+    }
+    
+    @FXML
+    void onSelectedOptionCompanyID(MouseEvent event) {
+    	onCompanyAndPositionSelected();
 
     }
+
+    @FXML
+    void onSelectedOptionPosition(MouseEvent event) {
+    	onCompanyAndPositionSelected();
+
+    }
+
 
 }

@@ -22,7 +22,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <TextField fx:id="CompanyNameField" layoutX="138.0" layoutY="188.0" onMouseClicked="#onCompanyNameFieldChanged" />
+      <TextField fx:id="CompanyNameField" layoutX="138.0" layoutY="188.0" onKeyPressed="#onKeyTypeCompanyName" onMouseClicked="#onCompanyNameFieldChanged" />
       <Text fx:id="CompanyRoleLabel" fill="WHITE" layoutX="166.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Company Role">
          <font>
             <Font size="14.0" />
