@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="611.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.SensorFormCtr">
+   <children>
+      <Pane prefHeight="29.0" prefWidth="588.0" style="-fx-background-color: black;">
+         <children>
+            <Text fill="#fcfcfc" layoutX="329.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Sensors" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane prefHeight="29.0" prefWidth="588.0">
+         <children>
+            <Text layoutX="264.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensors Management for Pixar Optics" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <TableView fx:id="sensorTable" prefHeight="131.0" prefWidth="568.0">
+        <columns>
+          <TableColumn fx:id="sensorNameColumn" prefWidth="127.0" text="Sensor Name" />
+          <TableColumn fx:id="sensorSpeedColumn" prefWidth="170.0" text="Sensor Speed (DPI)" />
+            <TableColumn fx:id="sensorPriceColumn" prefWidth="227.0" text="Sensor Price (IDR)" />
+            <TableColumn fx:id="sensorStockColumn" prefWidth="214.0" text="Sensor Stock" />
+        </columns>
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
+      </TableView>
+      <GridPane prefHeight="419.0" prefWidth="759.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="sensorName" editable="false" layoutX="24.0" layoutY="30.0" prefHeight="25.0" prefWidth="332.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" />
+                  <Text layoutX="155.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensor Name" />
+                  <TextField fx:id="sensorType" editable="false" layoutX="24.0" layoutY="79.0" prefHeight="25.0" prefWidth="332.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" />
+                  <Text layoutX="158.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensor Type" />
+                  <TextField fx:id="sensorSpeed" editable="false" layoutX="24.0" layoutY="127.0" prefHeight="25.0" prefWidth="332.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" />
+                  <Text layoutX="140.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensor Speed (DPI)" />
+                  <TextField fx:id="sensorPrice" editable="false" layoutX="24.0" layoutY="177.0" prefHeight="25.0" prefWidth="332.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" />
+                  <Text layoutX="143.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensor Price (IDR)" />
+                  <TextField fx:id="sensorStock" editable="false" layoutX="24.0" layoutY="225.0" prefHeight="25.0" prefWidth="332.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" />
+                  <Text layoutX="155.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensor Stock" />
+                  <Spinner fx:id="sensorQty" editable="true" layoutX="155.0" layoutY="284.0" prefHeight="25.0" prefWidth="71.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="154.0" />
+                  <Text layoutX="120.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add selected sensor stock" />
+                  <Button fx:id="addSensorBttn" layoutX="94.0" layoutY="320.0" mnemonicParsing="false" onAction="#addSensorPressed" prefHeight="25.0" prefWidth="194.0" text="Add Stock" visible="false" />
+                  <Button fx:id="deleteSensorBttn" layoutX="120.0" layoutY="361.0" mnemonicParsing="false" onAction="#deleteSensorPressed" prefHeight="25.0" prefWidth="137.0" text="Delete Sensor" visible="false" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <TextField fx:id="newSensorName" layoutX="47.0" layoutY="69.0" prefHeight="25.0" prefWidth="286.0" />
+                  <Text layoutX="141.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Sensor Name" />
+                  <Text layoutX="145.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Sensor Type" />
+                  <Spinner fx:id="newSensorSpeed" editable="true" layoutX="154.0" layoutY="155.0" prefHeight="25.0" prefWidth="71.0" />
+                  <Text layoutX="125.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Sensor Speed (DPI)" />
+                  <Spinner fx:id="newSensorPrice" editable="true" layoutX="154.0" layoutY="207.0" prefHeight="25.0" prefWidth="71.0" />
+                  <Text layoutX="129.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Sensor Price (IDR)" />
+                  <Text layoutX="126.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Sensor Initial Stock" />
+                  <Spinner fx:id="newSensorStock" editable="true" layoutX="154.0" layoutY="254.0" prefHeight="25.0" prefWidth="71.0" />
+                  <RadioButton layoutX="130.0" layoutY="116.0" mnemonicParsing="false" text="Laser">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="sensortype" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton layoutX="192.0" layoutY="116.0" mnemonicParsing="false" text="Optical" toggleGroup="$sensortype" />
+                  <Button fx:id="insertSensorBttn" layoutX="136.0" layoutY="302.0" mnemonicParsing="false" onAction="#insertNewSensorPressed" text="Insert New Sensor" />
+               </children>
+            </AnchorPane>
+         </children>
+      </GridPane>
+   </children>
+</VBox>
