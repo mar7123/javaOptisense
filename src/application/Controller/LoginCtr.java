@@ -21,6 +21,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class LoginCtr {
+	
+	
+	private String CompanyCode;
 
     @FXML
     private Button LoginButton;
@@ -65,12 +68,13 @@ public class LoginCtr {
         try {
             // check the employee id and password in the database
         	Connection connection = DBConnection.getKoneksi();
-            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM employees WHERE EmployeeID = ? AND EmployeePassword = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*), CompanyCode FROM employees WHERE EmployeeID = ? AND EmployeePassword = ?");
             statement.setString(1, employeeID);
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next() && resultSet.getInt(1) > 0) {
                 // Close the login form and open the home form
+            	this.CompanyCode = resultSet.getString("CompanyCode");
                 LoginButton.getScene().getWindow().hide();
                 openHomeForm(true);
             } else {
@@ -97,13 +101,21 @@ public class LoginCtr {
 
     }
     
+    public void companyCode() {
+    	
+    }
+    
+    public String getCompanyCode() {
+        return this.CompanyCode;
+    }
+    
     private void openHomeForm(boolean vendor) {
         // code to open the home form
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/MainForm.fxml"));
             Parent root = loader.load();
             MainFormCtr ctr = loader.getController();
-            ctr.isvendor(vendor);
+            ctr.isvendor(vendor, this.CompanyCode);
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -114,6 +126,7 @@ public class LoginCtr {
         }
     }
     
+     
     private void openRegisterCompanyForm() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/RegisterCompany.fxml"));

@@ -18,6 +18,8 @@ import javafx.geometry.Insets;
 
 
 public class MainFormCtr {
+	
+	private String CompanyCode;
 
 	@FXML
     private MenuItem LogOutMenuItem;
@@ -34,7 +36,8 @@ public class MainFormCtr {
     @FXML
     private Menu UserMenu;
 
-	void isvendor(boolean flag) {
+	void isvendor(boolean flag, String CompanyCodeParameter) {
+		this.CompanyCode = CompanyCodeParameter;
 		if (!flag) {
 			MenuItem Orders = new MenuItem();
 			Orders.setId("OrderMenuItem");
@@ -57,12 +60,17 @@ public class MainFormCtr {
 
 	@FXML
 	void SensorMenuPressed(ActionEvent event) {
+		
 		try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/SensorForm.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/SensorForm.fxml"));
             Parent root = loader.load();
+            Scene scene = new Scene(root);
             SensorFormCtr ctr = loader.getController();
-            ctr.loadInterface();
-            MainBorderPane.setCenter(root);
+            ctr.initialize(this.CompanyCode);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Sensor");
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

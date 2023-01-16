@@ -3,6 +3,7 @@ package application.Controller;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import application.model.Sensor;
 import application.DBConnection;
@@ -12,6 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
@@ -23,6 +26,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 
 public class SensorFormCtr {
+	
+	private String CompanyCode;
+	
 
 	@FXML
 	private Button addSensorBttn;
@@ -38,7 +44,7 @@ public class SensorFormCtr {
 
 	@FXML
 	private Spinner<Integer> newSensorPrice;
-
+	
 	@FXML
 	private Spinner<Integer> newSensorSpeed;
 
@@ -59,6 +65,7 @@ public class SensorFormCtr {
 
 	@FXML
 	private Spinner<Integer> sensorQty;
+	
 
 	@FXML
 	private TextField sensorSpeed;
@@ -80,16 +87,35 @@ public class SensorFormCtr {
 
 	@FXML
 	private ToggleGroup sensortype;
+	
+	@FXML
+    private RadioButton LaserRadio;
 
+    @FXML
+    private RadioButton OpticalRadio;
+    
+    @FXML
+    private Label title;
+    
+ 
 	ObservableList<Sensor> listview = FXCollections.observableArrayList();
+	
 
-	/**
-	 * 
-	 */
-
-	public SensorFormCtr() {
-//		sensorQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 3));
-	}
+	
+	
+	
+	public void initialize(String CompanyCode) {
+		newSensorPrice.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
+		newSensorSpeed.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
+		newSensorStock.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
+		sensorQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
+		
+		loadTableData();
+		this.CompanyCode = CompanyCode;
+		getCompanyName();
+		
+        
+    }
 
 	private void loadTableData() {
 		sensorTable.getItems().clear();
@@ -117,6 +143,7 @@ public class SensorFormCtr {
 		sensorPriceColumn.setCellValueFactory(new PropertyValueFactory<>("SensorPrice"));
 		sensorSpeedColumn.setCellValueFactory(new PropertyValueFactory<>("SensorSpeed"));
 		sensorStockColumn.setCellValueFactory(new PropertyValueFactory<>("SensorStock"));
+		
 		try {
 			Connection c = DBConnection.getKoneksi();
 			PreparedStatement statement = c.prepareStatement("SELECT * FROM sensors");
@@ -142,10 +169,6 @@ public class SensorFormCtr {
 		addSensorBttn.setVisible(false);
 		deleteSensorBttn.setVisible(false);
 		sensorQty.setEditable(false);
-		sensorQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
-		newSensorPrice.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
-		newSensorSpeed.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
-		newSensorStock.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
 	}
 
 	@FXML
@@ -166,6 +189,7 @@ public class SensorFormCtr {
 			}
 			Alert alert = new Alert(Alert.AlertType.INFORMATION, "Stock has been added");
             alert.show();
+            this.loadTableData();
 			this.loadInterface();
 		}
 	}
@@ -177,17 +201,49 @@ public class SensorFormCtr {
 			PreparedStatement statement = c.prepareStatement("DELETE FROM sensors WHERE SensorID = ?");
 			Sensor selected = sensorTable.getSelectionModel().getSelectedItem();
 			statement.setString(1, selected.getSensorID());
-			statement.execute();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		Alert alert = new Alert(Alert.AlertType.INFORMATION, "Sensor deleted");
         alert.show();
+        loadTableData();
 		this.loadInterface();
+	}
+	
+	private void getCompanyName() {
+        try {
+        	Connection connection = DBConnection.getKoneksi();
+            PreparedStatement statement = connection.prepareStatement("SELECT CompanyName FROM companies WHERE CompanyCode = ?");
+     		statement.setString(1, CompanyCode);
+     		ResultSet resultSet = statement.executeQuery();
+     		resultSet.next();
+     		if(resultSet.getInt(1) > 0) {
+     			title.setText(resultSet.getString("CompanyName"));
+     		}
+     		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@FXML
 	void insertNewSensorPressed(ActionEvent event) {
+		
+	
+	    int sensor_speed = newSensorSpeed.getValue();
+	    int sensor_price = newSensorPrice.getValue();
+	    int sensor_stock = newSensorStock.getValue();
+	    String sensor_type = "";
+	    String sensor_name = newSensorName.getText();
+	    if (LaserRadio.isSelected()) {
+	         sensor_type = "Laser";
+	    } else if (OpticalRadio.isSelected()) {
+	    	 sensor_type = "Optical";
+	    }
+	    
+	    
 		if(newSensorName.getText().isEmpty()) {
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Name must be inserted");
 	        alert.show();
@@ -204,12 +260,29 @@ public class SensorFormCtr {
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Stock must be over 0");
 	        alert.show();
 		} else {
-//			try {
-//				Connection c = DBConnection.getKoneksi();
-//				PreparedStatement statement = c.prepareStatement("INSERT INTO sensors values (?, ?, ?, ?, ?");
-//				statement.setString(1, selected.getSensorID());
-//				statement.execute();
-//			}
+			
+			try {
+			Connection connection = DBConnection.getKoneksi();
+	        PreparedStatement statement = connection.prepareStatement("INSERT INTO sensors ( SensorName, SensorType, SensorSpeed, SensorPrice, SensorStock, VendorCode) VALUES (?, ?, ?, ?, ?, ?)");
+	        statement.setString(1, sensor_name);
+	        statement.setString(2, sensor_type);
+	        statement.setInt(3, sensor_speed);
+	        statement.setInt(4, sensor_price);
+	        statement.setInt(5, sensor_stock);
+	        statement.setString(6, CompanyCode);
+	        statement.executeUpdate();
+	        
+	        
+	        // Show a success message
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Data has been Inserted successfully.");
+            alert.show();
+            
+            this.loadInterface();
+            
+			}catch (SQLException e  ) {
+    	        e.printStackTrace();
+    	    }
+			
 		}
 	}
 
