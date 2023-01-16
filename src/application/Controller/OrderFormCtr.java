@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
@@ -19,6 +20,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 
 public class OrderFormCtr {
 
@@ -73,6 +75,7 @@ public class OrderFormCtr {
 					Orders selected = row.getItem();
 					orderVendor.setText(selected.getVendorName());
 					orderSensor.setText(selected.getSensorName());
+					orderQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, selected.getSensorStock() - selected.getOrderQuantityInt(), selected.getOrderQuantityInt()));
 					updateOrderBttn.setVisible(true);
 					cancelOrderBttn.setVisible(true);
 				}
@@ -109,17 +112,55 @@ public class OrderFormCtr {
 
     @FXML
     void cancelOrderPressed(ActionEvent event) {
-
+    	try {
+			Connection c = DBConnection.getKoneksi();
+			PreparedStatement statement = c.prepareStatement("DELETE FROM orders WHERE OrderID = ?");
+			Orders selected = orderTable.getSelectionModel().getSelectedItem();
+			statement.setString(1, selected.getOrderID());
+			statement.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Alert alert = new Alert(Alert.AlertType.INFORMATION, "Order deleted");
+        alert.show();
+		this.loadInterface();
     }
 
     @FXML
     void makeOrderPressed(ActionEvent event) {
 
     }
+    
+    @FXML
+    void orderQtyChanged(InputMethodEvent event) {
+    	int selectedQty = orderTable.getSelectionModel().getSelectedItem().getOrderQuantityInt();
+    	if(orderQty.getValue() != selectedQty) {
+    		updateOrderBttn.setDisable(false);
+    	}else {
+    		updateOrderBttn.setDisable(true);
+    	}
+    }
 
     @FXML
     void updateOrderPressed(ActionEvent event) {
-
+    	if(orderQty.getValue() <= 0) {
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Order quantity must be greater than 0.");
+            alert.show();
+		}else {
+			try {
+				Connection c = DBConnection.getKoneksi();
+				PreparedStatement statement = c.prepareStatement("UPDATE orders SET OrderQuantity = ? WHERE OrderID = ?");
+				Orders selected = orderTable.getSelectionModel().getSelectedItem();
+				statement.setInt(1, selected.getOrderQuantityInt());
+				statement.setString(2, selected.getOrderID());
+				statement.execute();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Alert alert = new Alert(Alert.AlertType.INFORMATION, "Order Quantity has been updated");
+            alert.show();
+			this.loadInterface();
+		}
     }
 
 }
