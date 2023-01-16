@@ -45,7 +45,7 @@ public class MainFormCtr {
 					Insets inset = new Insets(13, 0, 0, 0);
 					centerPane.setPadding(inset);
 					SensorFormCtr ctr = xmlloader.getController();
-					ctr.loadTableData();
+					ctr.loadInterface();
 					MainBorderPane.setCenter(centerPane);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -63,7 +63,7 @@ public class MainFormCtr {
 			Insets inset = new Insets(13, 0, 0, 0);
 			centerPane.setPadding(inset);
 			SensorFormCtr ctr = xmlloader.getController();
-			ctr.loadTableData();
+			ctr.loadInterface();
 			MainBorderPane.setCenter(centerPane);
 		} catch (Exception e) {
 			e.printStackTrace();

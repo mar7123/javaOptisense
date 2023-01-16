@@ -10,14 +10,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 
 public class SensorFormCtr {
 
@@ -34,13 +37,13 @@ public class SensorFormCtr {
 	private TextField newSensorName;
 
 	@FXML
-	private Spinner<?> newSensorPrice;
+	private Spinner<Integer> newSensorPrice;
 
 	@FXML
-	private Spinner<?> newSensorSpeed;
+	private Spinner<Integer> newSensorSpeed;
 
 	@FXML
-	private Spinner<?> newSensorStock;
+	private Spinner<Integer> newSensorStock;
 
 	@FXML
 	private TextField sensorName;
@@ -55,7 +58,7 @@ public class SensorFormCtr {
 	private TableColumn<Sensor, String> sensorPriceColumn;
 
 	@FXML
-	private Spinner<?> sensorQty;
+	private Spinner<Integer> sensorQty;
 
 	@FXML
 	private TextField sensorSpeed;
@@ -83,7 +86,12 @@ public class SensorFormCtr {
 	/**
 	 * 
 	 */
-	void loadTableData() {
+
+	public SensorFormCtr() {
+//		sensorQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 3));
+	}
+
+	private void loadTableData() {
 		sensorTable.getItems().clear();
 		sensorTable.setRowFactory(rf -> {
 			TableRow<Sensor> row = new TableRow<>();
@@ -97,11 +105,12 @@ public class SensorFormCtr {
 					sensorStock.setText(selected.getSensorStock());
 					addSensorBttn.setVisible(true);
 					deleteSensorBttn.setVisible(true);
+					sensorQty.setEditable(true);
 				}
 			});
-//			row.setOnMouseExited(event -> {
-//				sensorName.setText("");
-//			});
+			row.setOnMouseReleased(event -> {
+				sensorName.setText("");
+			});
 			return row;
 		});
 		sensorNameColumn.setCellValueFactory(new PropertyValueFactory<>("SensorName"));
@@ -122,20 +131,67 @@ public class SensorFormCtr {
 			e.printStackTrace();
 		}
 	}
+	
+	void loadInterface() {
+		this.loadTableData();
+		sensorName.setText("");
+		sensorType.setText("");
+		sensorSpeed.setText("");
+		sensorPrice.setText("");
+		sensorStock.setText("");
+		addSensorBttn.setVisible(false);
+		deleteSensorBttn.setVisible(false);
+		sensorQty.setEditable(false);
+		sensorQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
+		newSensorPrice.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
+		newSensorSpeed.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
+		newSensorStock.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
+	}
 
 	@FXML
 	void addSensorPressed(ActionEvent event) {
-
+		if(sensorQty.getValue() <= 0) {
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Number of added stock must be greater than 0.");
+            alert.show();
+		}else {
+			try {
+				Connection c = DBConnection.getKoneksi();
+				PreparedStatement statement = c.prepareStatement("UPDATE sensors SET SensorStock = ? WHERE SensorID = ?");
+				Sensor selected = sensorTable.getSelectionModel().getSelectedItem();
+				statement.setInt(1, selected.getSensorStockInt() + sensorQty.getValue());
+				statement.setString(2, selected.getSensorID());
+				statement.execute();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Alert alert = new Alert(Alert.AlertType.INFORMATION, "Stock has been added");
+            alert.show();
+			this.loadInterface();
+		}
 	}
 
 	@FXML
 	void deleteSensorPressed(ActionEvent event) {
-
+		try {
+			Connection c = DBConnection.getKoneksi();
+			PreparedStatement statement = c.prepareStatement("DELETE FROM sensors WHERE SensorID = ?");
+			Sensor selected = sensorTable.getSelectionModel().getSelectedItem();
+			statement.setString(1, selected.getSensorID());
+			statement.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Alert alert = new Alert(Alert.AlertType.INFORMATION, "Sensor deleted");
+        alert.show();
+		this.loadInterface();
 	}
 
 	@FXML
 	void insertNewSensorPressed(ActionEvent event) {
-
+		if(newSensorName.getText().isEmpty()) {
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Name must be inserted");
+	        alert.show();
+		}
 	}
 
 }

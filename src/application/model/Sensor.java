@@ -46,4 +46,8 @@ public class Sensor {
 	public String getSensorStock() {
 		return this.SensorStock + "";
 	}
+	
+	public int getSensorStockInt() {
+		return this.SensorStock;
+	}
 }

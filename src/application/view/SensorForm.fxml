@@ -69,7 +69,7 @@
                   <Text layoutX="143.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensor Price (IDR)" />
                   <TextField fx:id="sensorStock" editable="false" layoutX="24.0" layoutY="225.0" prefHeight="25.0" prefWidth="332.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" />
                   <Text layoutX="155.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensor Stock" />
-                  <Spinner fx:id="sensorQty" layoutX="155.0" layoutY="284.0" prefHeight="25.0" prefWidth="71.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="154.0" />
+                  <Spinner fx:id="sensorQty" editable="true" layoutX="155.0" layoutY="284.0" prefHeight="25.0" prefWidth="71.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="154.0" />
                   <Text layoutX="120.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add selected sensor stock" />
                   <Button fx:id="addSensorBttn" layoutX="94.0" layoutY="320.0" mnemonicParsing="false" onAction="#addSensorPressed" prefHeight="25.0" prefWidth="194.0" text="Add Stock" visible="false" />
                   <Button fx:id="deleteSensorBttn" layoutX="120.0" layoutY="361.0" mnemonicParsing="false" onAction="#deleteSensorPressed" prefHeight="25.0" prefWidth="137.0" text="Delete Sensor" visible="false" />
@@ -80,12 +80,12 @@
                   <TextField fx:id="newSensorName" layoutX="47.0" layoutY="69.0" prefHeight="25.0" prefWidth="286.0" />
                   <Text layoutX="141.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Sensor Name" />
                   <Text layoutX="145.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Sensor Type" />
-                  <Spinner fx:id="newSensorSpeed" layoutX="154.0" layoutY="155.0" prefHeight="25.0" prefWidth="71.0" />
+                  <Spinner fx:id="newSensorSpeed" editable="true" layoutX="154.0" layoutY="155.0" prefHeight="25.0" prefWidth="71.0" />
                   <Text layoutX="125.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Sensor Speed (DPI)" />
-                  <Spinner fx:id="newSensorPrice" layoutX="154.0" layoutY="207.0" prefHeight="25.0" prefWidth="71.0" />
+                  <Spinner fx:id="newSensorPrice" editable="true" layoutX="154.0" layoutY="207.0" prefHeight="25.0" prefWidth="71.0" />
                   <Text layoutX="129.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Sensor Price (IDR)" />
                   <Text layoutX="126.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Sensor Initial Stock" />
-                  <Spinner fx:id="newSensorStock" layoutX="154.0" layoutY="254.0" prefHeight="25.0" prefWidth="71.0" />
+                  <Spinner fx:id="newSensorStock" editable="true" layoutX="154.0" layoutY="254.0" prefHeight="25.0" prefWidth="71.0" />
                   <RadioButton layoutX="130.0" layoutY="116.0" mnemonicParsing="false" text="Laser">
                      <toggleGroup>
                         <ToggleGroup fx:id="sensortype" />
