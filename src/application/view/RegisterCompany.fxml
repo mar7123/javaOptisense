@@ -1,38 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="800.0" maxWidth="800.0" prefHeight="600.0" prefWidth="427.0" style="-fx-background-color: #151519;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.LoginCtr">
+<AnchorPane maxHeight="800.0" maxWidth="800.0" prefHeight="600.0" prefWidth="427.0" style="-fx-background-color: #151519;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller.RegisterCompanyCtr">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="10.0" fill="#474753" height="250.0" layoutX="64.0" layoutY="128.0" stroke="TRANSPARENT" strokeType="INSIDE" width="299.0" />
+      <Rectangle arcHeight="5.0" arcWidth="10.0" fill="#474753" height="261.0" layoutX="64.0" layoutY="128.0" stroke="TRANSPARENT" strokeType="INSIDE" width="299.0" />
       <Text fx:id="WelcomeLabel" fill="WHITE" layoutX="132.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OptiSense" AnchorPane.topAnchor="74.2314453125">
          <font>
             <Font name="System Bold" size="35.0" />
          </font>
       </Text>
-      <Text fx:id="UsernameLabel" fill="WHITE" layoutX="181.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+      <Text fx:id="CompanyNameLabel" fill="WHITE" layoutX="162.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Company Name">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <TextField fx:id="UsernameField" layoutX="138.0" layoutY="188.0" />
-      <Text fx:id="PasswordLabel" fill="WHITE" layoutX="183.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
+      <TextField fx:id="CompanyNameField" layoutX="138.0" layoutY="188.0" onKeyPressed="#onCompanyNameFieldChanged" />
+      <Text fx:id="CompanyRoleLabel" fill="WHITE" layoutX="166.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Company Role">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <PasswordField fx:id="PassField" layoutX="138.0" layoutY="255.0" />
-      <Button fx:id="LoginButton" layoutX="144.0" layoutY="308.0" mnemonicParsing="false" onAction="#LoginButtonPressed" prefHeight="32.0" prefWidth="142.0" text="Login" />
-      <Hyperlink fx:id="RegisterHyperlink" layoutX="159.0" layoutY="396.0" onAction="#RegisterButtonPressed" text="Register Employee" />
-      <Hyperlink fx:id="RegisterHyperlink1" layoutX="161.0" layoutY="420.0" onAction="#RegisterButtonPressed" text="Register Company" />
+      <Button fx:id="RegisterButton" layoutX="141.0" layoutY="344.0" mnemonicParsing="false" onAction="#RegisterButtonPressed" prefHeight="32.0" prefWidth="142.0" text="Register" />
+      <Hyperlink fx:id="LoginEmployeeHL" layoutX="168.0" layoutY="411.0" onAction="#LoginEmployeeHLPressed" text="Login Employee" />
+      <Hyperlink fx:id="RegisterEmployeeHL" layoutX="161.0" layoutY="435.0" onAction="#RegisterEmployeeHLPressed" text="Register Employee" />
       <Text fx:id="UsernameLabel1" fill="#8f8d8d" layoutX="75.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OptiSense-Mice Sensor Distribution Software">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="CompanyRoleCombo" layoutX="138.0" layoutY="241.0" prefWidth="150.0" promptText="Vendor" />
+      <TextField fx:id="GeneratedCodeField" editable="false" layoutX="136.0" layoutY="297.0" opacity="0.53" />
+      <Text fx:id="GeneratedCodeLabel" fill="WHITE" layoutX="164.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Generated Code">
          <font>
             <Font size="14.0" />
          </font>
