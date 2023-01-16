@@ -62,8 +62,9 @@ public class LoginController {
         }
 
         // Connect to the database and check if the employee ID and password are correct
-        try (Connection connection = DBConnection.getKoneksi()) {
+        try {
             // check the employee id and password in the database
+        	Connection connection = DBConnection.getKoneksi();
             PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM employees WHERE EmployeeID = ? AND EmployeePassword = ?");
             statement.setString(1, employeeID);
             statement.setString(2, password);
@@ -71,7 +72,7 @@ public class LoginController {
             if (resultSet.next() && resultSet.getInt(1) > 0) {
                 // Close the login form and open the home form
                 LoginButton.getScene().getWindow().hide();
-                openHomeForm();
+                openHomeForm(true);
             } else {
                 // Show an error message if the employee ID or password is incorrect
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Incorrect employee ID or password.");
@@ -92,11 +93,13 @@ public class LoginController {
 //
 //    }
     
-    private void openHomeForm() {
+    private void openHomeForm(boolean vendor) {
         // code to open the home form
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/MainForm.fxml"));
             Parent root = loader.load();
+            MainFormCtr ctr = loader.getController();
+            ctr.isvendor(vendor);
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);

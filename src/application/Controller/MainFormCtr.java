@@ -1,10 +1,6 @@
 package application.Controller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
-import application.DBConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +9,9 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
-import java.util.List;
-import java.util.ArrayList;
 
 public class MainFormCtr {
 
@@ -42,59 +37,37 @@ public class MainFormCtr {
 			Orders.setText("Orders");
 			ManageMenu.getItems().clear();
 			ManageMenu.getItems().add(Orders);
-			Orders.setOnAction(e -> {
-				List<String> tablename = new ArrayList<String>();
-				tablename.add("products");
-//				setCenterPane("ManageTShirt");
+			Orders.setOnAction(odr -> {
+				try {
+					FXMLLoader xmlloader = new FXMLLoader();
+					xmlloader.setLocation(getClass().getResource("/application/view/OrderForm.fxml"));
+					VBox centerPane = (VBox) xmlloader.load();
+					Insets inset = new Insets(13, 0, 0, 0);
+					centerPane.setPadding(inset);
+					SensorFormCtr ctr = xmlloader.getController();
+					ctr.loadTableData();
+					MainBorderPane.setCenter(centerPane);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			});
 		}
 	}
 
-//	FXMLLoader setCenterPane(String viewname) {
-//		try {
-//			FXMLLoader xmlloader = new FXMLLoader();
-//			xmlloader.setLocation(getClass().getResource("/application/view/" + viewname + ".fxml"));
-//			AnchorPane centerPane = (AnchorPane) xmlloader.load();
-//			Insets inset = new Insets(13, 0, 0, 0);
-//			centerPane.setPadding(inset);
-//			return centerPane;
-//			} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
-
-	ResultSet loadTable(String table_name) {
+	@FXML
+	void SensorMenuPressed(ActionEvent event) {
 		try {
-			Connection c = DBConnection.getKoneksi();
-
-			String sql = "SELECT * FROM " + table_name;
-			PreparedStatement stmt = c.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery();
-			return rs;
-
+			FXMLLoader xmlloader = new FXMLLoader();
+			xmlloader.setLocation(getClass().getResource("/application/view/SensorForm.fxml"));
+			VBox centerPane = (VBox) xmlloader.load();
+			Insets inset = new Insets(13, 0, 0, 0);
+			centerPane.setPadding(inset);
+			SensorFormCtr ctr = xmlloader.getController();
+			ctr.loadTableData();
+			MainBorderPane.setCenter(centerPane);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
-	}
-
-	@FXML
-	void SensorMenuPressed(ActionEvent event) {
-//		List<String> tablename = new ArrayList<String>();
-//		tablename.add("products");
-//		tablename.add("cart");
-//		try {
-//			FXMLLoader xmlloader = new FXMLLoader();
-//			xmlloader.setLocation(getClass().getResource("/application/view/BuyMenuItem.fxml"));
-//			AnchorPane centerPane = (AnchorPane) xmlloader.load();
-//			Insets inset = new Insets(13, 0, 0, 0);
-//			centerPane.setPadding(inset);
-//			BuyMenuCtr ctr = xmlloader.getController();
-//			MainBorderPane.setCenter(centerPane);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	@FXML
