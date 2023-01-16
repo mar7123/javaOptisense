@@ -191,6 +191,25 @@ public class SensorFormCtr {
 		if(newSensorName.getText().isEmpty()) {
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Name must be inserted");
 	        alert.show();
+		} else if (sensortype.getSelectedToggle() == null) {
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Type must be selected");
+	        alert.show();
+		} else if (newSensorSpeed.getValue() <= 500) {
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Speed must be over 500");
+	        alert.show();
+		} else if (newSensorPrice.getValue() <= 0) {
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Price must be over 0");
+	        alert.show();
+		} else if (newSensorStock.getValue() <= 0) {
+			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Stock must be over 0");
+	        alert.show();
+		} else {
+//			try {
+//				Connection c = DBConnection.getKoneksi();
+//				PreparedStatement statement = c.prepareStatement("INSERT INTO sensors values (?, ?, ?, ?, ?");
+//				statement.setString(1, selected.getSensorID());
+//				statement.execute();
+//			}
 		}
 	}
 
