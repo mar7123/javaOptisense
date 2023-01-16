@@ -11,12 +11,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-<<<<<<< HEAD
-import java.util.List;
-import java.util.ArrayList;
-=======
 import javafx.geometry.Insets;
->>>>>>> 42a6121684b79c8bc65121c105436deb33da3e0a
+
 
 public class MainFormCtr {
 
