@@ -20,7 +20,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.MouseEvent;
 
 public class OrderFormCtr {
 
@@ -31,7 +31,10 @@ public class OrderFormCtr {
     private Button makeOrderBttn;
 
     @FXML
-    private ComboBox<?> newOrderCombo;
+    private ComboBox<String> newSensorCombo;
+
+    @FXML
+    private ComboBox<String> newVendorCombo;
 
     @FXML
     private Spinner<Integer> newOrderQty;
@@ -64,8 +67,9 @@ public class OrderFormCtr {
     private TableColumn<Orders, String> vendorColumn;
     
 	ObservableList<Orders> listview = FXCollections.observableArrayList();
+	
+	private int sensorStock;
 
-    
     private void loadTableData() {
     	orderTable.getItems().clear();
     	orderTable.setRowFactory(rf -> {
@@ -82,10 +86,10 @@ public class OrderFormCtr {
 			});
 			return row;
 		});
-    	vendorColumn.setCellValueFactory(new PropertyValueFactory<>("SensorName"));
-    	productColumn.setCellValueFactory(new PropertyValueFactory<>("SensorPrice"));
-    	orderQtyColumn.setCellValueFactory(new PropertyValueFactory<>("SensorSpeed"));
-    	totalPriceColumn.setCellValueFactory(new PropertyValueFactory<>("SensorStock"));
+    	vendorColumn.setCellValueFactory(new PropertyValueFactory<>("VendorName"));
+    	productColumn.setCellValueFactory(new PropertyValueFactory<>("SensorName"));
+    	orderQtyColumn.setCellValueFactory(new PropertyValueFactory<>("OrderQuantity"));
+    	totalPriceColumn.setCellValueFactory(new PropertyValueFactory<>("TotalPrice"));
 		try {
 			Connection c = DBConnection.getKoneksi();
 			PreparedStatement statement = c.prepareStatement("SELECT * FROM orders");
@@ -101,11 +105,15 @@ public class OrderFormCtr {
 	}
 
     void loadInterface() {
+    	listview.clear();
     	this.loadTableData();
+    	this.loadComboBoxData();
     	orderVendor.setText("");
     	orderSensor.setText("");
-    	updateOrderBttn.setVisible(true);
-    	cancelOrderBttn.setVisible(true);
+    	updateOrderBttn.setVisible(false);
+    	cancelOrderBttn.setVisible(false);
+    	newVendorCombo.setValue(null);
+    	newSensorCombo.setValue(null);
     	orderQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
     	newOrderQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 0));
     }
@@ -125,14 +133,105 @@ public class OrderFormCtr {
         alert.show();
 		this.loadInterface();
     }
+    
+    void loadComboBoxData() {
+    	ObservableList<String> options = FXCollections.observableArrayList();
+		try {
+			Connection c = DBConnection.getKoneksi();
+			PreparedStatement statement = c.prepareStatement("SELECT CompanyName FROM companies e inner join sensors f on e.CompanyCode = f.VendorCode");
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()) {
+				options.add(rs.getString("CompanyName"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		newVendorCombo.setItems(options);
+    }
+
+    @FXML
+    void newSensorClicked(ActionEvent event) {
+    	if(newSensorCombo.getSelectionModel().getSelectedItem() != null) {
+    		int option = 0;
+    		try {
+    			Connection c = DBConnection.getKoneksi();
+    			PreparedStatement statement = c.prepareStatement("SELECT SensorStock FROM sensors WHERE SensorName = ?");
+    			statement.setString(1, newSensorCombo.getSelectionModel().getSelectedItem());
+    			ResultSet rs = statement.executeQuery();
+    			if(rs.next()) {
+    				option = rs.getInt("SensorStock");
+    				this.sensorStock = option;
+    			}
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+        	newOrderQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, option, 0));
+    	}
+    }
+
+    @FXML
+    void newVendorClicked(ActionEvent event) {
+    	if(newVendorCombo.getSelectionModel().getSelectedItem() != null) {
+    		ObservableList<String> options = FXCollections.observableArrayList();
+    		try {
+    			Connection c = DBConnection.getKoneksi();
+    			PreparedStatement statement = c.prepareStatement("SELECT SensorName FROM sensors e INNER JOIN companies f on e.VendorCode=f.CompanyCode WHERE CompanyName = ?");
+    			statement.setString(1, newVendorCombo.getSelectionModel().getSelectedItem());
+    			ResultSet rs = statement.executeQuery();
+    			while(rs.next()) {
+    				options.add(rs.getString("SensorName"));
+    			}
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    		newSensorCombo.setItems(options);
+    	}
+    }
 
     @FXML
     void makeOrderPressed(ActionEvent event) {
-
+    	if(newVendorCombo.getSelectionModel().getSelectedItem() == null) {
+    		Alert alert = new Alert(Alert.AlertType.ERROR, "Vendor Name must be inserted");
+	        alert.show();
+    	} else if(newSensorCombo.getSelectionModel().getSelectedItem() == null) {
+    		Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Name must be inserted");
+	        alert.show();
+    	} else if(newOrderQty.getValue() == null || newOrderQty.getValue() <= 0) {
+    		Alert alert = new Alert(Alert.AlertType.ERROR, "Order Quantity must be inserted or greater than 0");
+	        alert.show();
+    	} else {
+        	try {
+    			Connection c = DBConnection.getKoneksi();
+    			PreparedStatement statement = c.prepareStatement("SELECT CompanyCode from companies WHERE CompanyName = ?");
+    			statement.setString(1, newVendorCombo.getSelectionModel().getSelectedItem());
+    			ResultSet rs = statement.executeQuery();
+    			rs.next();
+    			String clientCode = rs.getString("CompanyCode");
+    			statement = c.prepareStatement("SELECT SensorID from sensors WHERE SensorName = ?");
+    			statement.setString(1, newSensorCombo.getSelectionModel().getSelectedItem());
+    			rs = statement.executeQuery();
+    			rs.next();
+    			int sensorID = rs.getInt("SensorID");
+    			statement = c.prepareStatement("INSERT INTO orders (SensorID, ClientCode, OrderQuantity) values (?, ?, ?)");
+    			statement.setInt(1, sensorID);
+    			statement.setString(2, clientCode);
+    			statement.setInt(3, newOrderQty.getValue());
+    			statement.execute();
+    			statement = c.prepareStatement("UPDATE sensors SET SensorStock = ? WHERE SensorID = ?");
+				statement.setInt(1, this.sensorStock - newOrderQty.getValue());
+				statement.setInt(2, sensorID);
+				statement.execute();
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+        	Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully made new order!");
+	        alert.show();
+    		this.loadInterface();
+    	}
     }
     
     @FXML
-    void orderQtyChanged(InputMethodEvent event) {
+    void orderQtyChanged(MouseEvent event) {
     	int selectedQty = orderTable.getSelectionModel().getSelectedItem().getOrderQuantityInt();
     	if(orderQty.getValue() != selectedQty) {
     		updateOrderBttn.setDisable(false);

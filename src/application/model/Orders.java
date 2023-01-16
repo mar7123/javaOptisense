@@ -14,6 +14,7 @@ public class Orders {
 	private String SensorName;
 	private int OrderQuantity;
 	private int SensorStock;
+	private int TotalPrice;
 
 	public Orders(int orderID, int sensorID, String clientCode, int orderQty) {
 		this.OrderID = orderID;
@@ -22,13 +23,15 @@ public class Orders {
 		this.OrderQuantity = orderQty;
 		try {
 			Connection c = DBConnection.getKoneksi();
-			PreparedStatement statement = c.prepareStatement("SELECT DISTINCT CompanyName, SensorName, SensorStock FROM companies e inner join orders f on e.CompanyCode = f.ClientCode inner join sensors g on f.SensorID = g.SensorID WHERE SensorID = ? and CompanyCode = ?");
+			PreparedStatement statement = c.prepareStatement("SELECT DISTINCT CompanyName, SensorName, SensorStock, SensorPrice FROM companies e inner join orders f on e.CompanyCode = f.ClientCode inner join sensors g on f.SensorID = g.SensorID WHERE g.SensorID = ? and e.CompanyCode = ?");
 			statement.setInt(1, this.SensorID);
 			statement.setString(2, this.ClientCode);
 			ResultSet rs = statement.executeQuery();
+			rs.next();
 			this.VendorName = rs.getString("CompanyName");
 			this.SensorName = rs.getString("SensorName");
 			this.SensorStock = rs.getInt("SensorStock");
+			this.TotalPrice = this.OrderQuantity * rs.getInt("SensorPrice");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,5 +67,9 @@ public class Orders {
 	
 	public int getSensorStock() {
 		return this.SensorStock;
+	}
+	
+	public int getTotalPrice() {
+		return this.TotalPrice;
 	}
 }

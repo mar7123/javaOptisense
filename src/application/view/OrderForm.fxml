@@ -62,7 +62,7 @@
                   <Text layoutX="155.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Vendor" />
                   <TextField fx:id="orderSensor" editable="false" layoutX="23.0" layoutY="172.0" prefHeight="25.0" prefWidth="332.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="25.0" />
                   <Text layoutX="153.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Sensor" />
-                  <Spinner fx:id="orderQty" editable="true" layoutX="154.0" layoutY="227.0" onInputMethodTextChanged="#orderQtyChanged" prefHeight="25.0" prefWidth="71.0" AnchorPane.leftAnchor="154.0" AnchorPane.rightAnchor="155.0" />
+                  <Spinner fx:id="orderQty" editable="true" layoutX="154.0" layoutY="227.0" onMouseClicked="#orderQtyChanged" prefHeight="25.0" prefWidth="71.0" AnchorPane.leftAnchor="154.0" AnchorPane.rightAnchor="155.0" />
                   <Text layoutX="148.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Quantity" />
                   <Button fx:id="updateOrderBttn" disable="true" layoutX="94.0" layoutY="320.0" mnemonicParsing="false" onAction="#updateOrderPressed" prefHeight="25.0" prefWidth="194.0" text="Update Order" visible="false" />
                   <Button fx:id="cancelOrderBttn" layoutX="120.0" layoutY="361.0" mnemonicParsing="false" onAction="#cancelOrderPressed" prefHeight="25.0" prefWidth="137.0" text="Cancel Order" visible="false" />
@@ -73,8 +73,8 @@
                   <Text layoutX="136.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Order Quantity" />
                   <Spinner fx:id="newOrderQty" editable="true" layoutX="154.0" layoutY="227.0" prefHeight="25.0" prefWidth="71.0" />
                   <Button fx:id="makeOrderBttn" layoutX="136.0" layoutY="276.0" mnemonicParsing="false" onAction="#makeOrderPressed" text="Make New Order" />
-                  <ComboBox fx:id="newOrderCombo" layoutX="115.0" layoutY="174.0" prefWidth="150.0" />
-                  <ComboBox fx:id="newOrderCombo" layoutX="115.0" layoutY="121.0" prefWidth="150.0" />
+                  <ComboBox fx:id="newSensorCombo" layoutX="115.0" layoutY="174.0" onAction="#newSensorClicked" prefWidth="150.0" />
+                  <ComboBox fx:id="newVendorCombo" layoutX="115.0" layoutY="121.0" onAction="#newVendorClicked" prefWidth="150.0" />
                   <Text layoutX="140.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Order Vendor" />
                   <Text layoutX="141.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Order Sensor" />
                </children>
