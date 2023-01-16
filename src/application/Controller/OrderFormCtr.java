@@ -1,5 +1,6 @@
 package application.Controller;
 
+import application.model.Orders;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,28 +28,32 @@ public class OrderFormCtr {
     private Spinner<?> orderQty;
 
     @FXML
-    private TableColumn<?, ?> orderQtyColumn;
+    private TableColumn<Orders, String> orderQtyColumn;
 
     @FXML
     private TextField orderSensor;
 
     @FXML
-    private TableView<?> orderTable;
+    private TableView<Orders> orderTable;
 
     @FXML
     private TextField orderVendor;
 
     @FXML
-    private TableColumn<?, ?> productColumn;
+    private TableColumn<Orders, String> productColumn;
 
     @FXML
-    private TableColumn<?, ?> totalPriceColumn;
+    private TableColumn<Orders, String> totalPriceColumn;
 
     @FXML
     private Button updateOrderBttn;
 
     @FXML
-    private TableColumn<?, ?> vendorColumn;
+    private TableColumn<Orders, String> vendorColumn;
+    
+    void loadInterface() {
+    	
+    }
 
     @FXML
     void cancelOrderPressed(ActionEvent event) {

@@ -45,11 +45,9 @@ public class MainFormCtr {
 				try {
 		            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/OrderForm.fxml"));
 		            Parent root = loader.load();
-		            Scene scene = new Scene(root);
-		            Stage stage = new Stage();
-		            stage.setScene(scene);
-		            stage.setTitle("Order Form");
-		            stage.show();
+		            OrderFormCtr ctr = loader.getController();
+		            ctr.loadInterface();
+		            MainBorderPane.setCenter(root);
 		        } catch (IOException e) {
 		            e.printStackTrace();
 		        }
@@ -62,11 +60,9 @@ public class MainFormCtr {
 		try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/SensorForm.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Sensor Form");
-            stage.show();
+            SensorFormCtr ctr = loader.getController();
+            ctr.loadInterface();
+            MainBorderPane.setCenter(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
