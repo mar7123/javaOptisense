@@ -80,8 +80,7 @@ public class LoginCtr {
 				statement.setString(1, this.CompanyCode);
 				resultSet = statement.executeQuery();
 				resultSet.next();
-				System.out.println(resultSet.getString("CompanyRole"));
-				if (resultSet.getString("CompanyRole").equals("Vendor")) {
+				if (resultSet.getString("CompanyRole") == "Vendor") {
 					openHomeForm(true);
 				} else {
 					openHomeForm(false);

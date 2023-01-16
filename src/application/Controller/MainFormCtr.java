@@ -80,7 +80,6 @@ public class MainFormCtr {
 	            Stage stage = new Stage();
 	            stage.setScene(scene);
 	            stage.setTitle("Login Panel");
-	            MainBorderPane.getScene().getWindow().hide();
 	            stage.show();
 	        } catch (IOException e) {
 	            e.printStackTrace();
