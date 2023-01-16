@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
 
 import application.DBConnection;
 import javafx.collections.FXCollections;
@@ -20,8 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -62,11 +60,16 @@ public class RegisterCompanyCtr {
 
     @FXML
     void LoginEmployeeHLPressed(ActionEvent event) {
-
+    	 // Close the register company form and open the employee login form
+    	LoginEmployeeHL.getScene().getWindow().hide();
+        openEmployeeLoginForm();
     }
     
     @FXML
     void RegisterEmployeeHLPressed(ActionEvent event) {
+    	// Close the register company form and open the register employee form
+    	RegisterEmployeeHL.getScene().getWindow().hide();
+        openRegisterEmployeeForm();
 
     }
     
@@ -121,12 +124,13 @@ public class RegisterCompanyCtr {
     }
 
     @FXML
-    void onCompanyNameFieldChanged(KeyEvent event) {
+    void onCompanyNameFieldChanged(MouseEvent event){
     	String companyName = CompanyNameField.getText();
         if (companyName.length() >= 2) {
             // Generate company code
             String companyCode = companyName.substring(0, 1) + companyName.substring(companyName.length() - 1);
-            try (Connection connection = DBConnection.getKoneksi()) {
+            try {
+            	Connection connection = DBConnection.getKoneksi();
                 PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM companies WHERE CompanyCode LIKE ?");
                 statement.setString(1, companyCode + "%");
                 ResultSet resultSet = statement.executeQuery();
@@ -139,23 +143,9 @@ public class RegisterCompanyCtr {
             }
             GeneratedCodeField.setText(companyCode);
         }
+    }
          
-        
-    }
-    
-    @FXML
-    void onEmployeeLoginButtonClicked(ActionEvent event) {
-        // Close the register company form and open the employee login form
-    	LoginEmployeeHL.getScene().getWindow().hide();
-        openEmployeeLoginForm();
-    }
-    
-    @FXML
-    void onRegisterEmployeeButtonClicked(ActionEvent event) {
-        // Close the register company form and open the register employee form
-    	RegisterEmployeeHL.getScene().getWindow().hide();
-        openRegisterEmployeeForm();
-    }
+     
 
     private void openEmployeeLoginForm() {
         // code to open the employee login form
@@ -174,6 +164,17 @@ public class RegisterCompanyCtr {
 
     private void openRegisterEmployeeForm() {
         // code to open the register employee form
+    	try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/RegisterEmployee.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Employee Register");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     	
     }
 }

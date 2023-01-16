@@ -14,7 +14,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.geometry.Insets;
 import java.util.List;
 import java.util.ArrayList;
 

@@ -89,10 +89,12 @@ public class LoginCtr {
 
     }
 
-//    @FXML
-//    void RegisterEmployeeHLClicked(ActionEvent event) {
-//
-//    }
+    @FXML
+    void RegisterEmployeeHLClicked(ActionEvent event) {
+    	LoginButton.getScene().getWindow().hide();
+        openRegisterEmployeeForm();
+
+    }
     
     private void openHomeForm() {
         // code to open the home form
@@ -117,6 +119,20 @@ public class LoginCtr {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setTitle("Register Company Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void openRegisterEmployeeForm() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/RegisterEmployee.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Register Employee Form");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

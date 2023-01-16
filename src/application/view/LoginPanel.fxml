@@ -30,7 +30,7 @@
       </Text>
       <PasswordField fx:id="PassField" layoutX="138.0" layoutY="255.0" />
       <Button fx:id="LoginButton" layoutX="144.0" layoutY="308.0" mnemonicParsing="false" onAction="#LoginButtonPressed" prefHeight="32.0" prefWidth="142.0" text="Login" />
-      <Hyperlink fx:id="RegisterEmployeeHL" layoutX="159.0" layoutY="396.0" text="Register Employee" />
+      <Hyperlink fx:id="RegisterEmployeeHL" layoutX="159.0" layoutY="396.0" onAction="#RegisterEmployeeHLClicked" text="Register Employee" />
       <Hyperlink fx:id="RegisterCompanyHL" layoutX="161.0" layoutY="420.0" onAction="#RegisterCompanyHLClicked" text="Register Company" />
       <Text fx:id="UsernameLabel1" fill="#8f8d8d" layoutX="75.0" layoutY="551.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OptiSense-Mice Sensor Distribution Software">
          <font>
