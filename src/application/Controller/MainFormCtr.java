@@ -11,8 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
 
@@ -64,13 +62,10 @@ public class MainFormCtr {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/SensorForm.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
             SensorFormCtr ctr = loader.getController();
-            ctr.initialize(this.CompanyCode);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Sensor");
-            stage.show();
+            ctr.passCompanyCode(this.CompanyCode);
+            ctr.loadInterface();
+            MainBorderPane.setCenter(root);
         } catch (IOException e) {
             e.printStackTrace();
         }

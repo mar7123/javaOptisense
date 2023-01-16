@@ -24,11 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-
 public class SensorFormCtr {
-	
-	private String CompanyCode;
-	
 
 	@FXML
 	private Button addSensorBttn;
@@ -44,12 +40,15 @@ public class SensorFormCtr {
 
 	@FXML
 	private Spinner<Integer> newSensorPrice;
-	
+
 	@FXML
 	private Spinner<Integer> newSensorSpeed;
 
 	@FXML
 	private Spinner<Integer> newSensorStock;
+
+	@FXML
+	private Spinner<Integer> sensorQty;
 
 	@FXML
 	private TextField sensorName;
@@ -62,10 +61,6 @@ public class SensorFormCtr {
 
 	@FXML
 	private TableColumn<Sensor, String> sensorPriceColumn;
-
-	@FXML
-	private Spinner<Integer> sensorQty;
-	
 
 	@FXML
 	private TextField sensorSpeed;
@@ -87,35 +82,19 @@ public class SensorFormCtr {
 
 	@FXML
 	private ToggleGroup sensortype;
-	
+
 	@FXML
-    private RadioButton LaserRadio;
+	private RadioButton LaserRadio;
 
-    @FXML
-    private RadioButton OpticalRadio;
-    
-    @FXML
-    private Label title;
-    
- 
+	@FXML
+	private RadioButton OpticalRadio;
+
+	@FXML
+	private Label title;
+
 	ObservableList<Sensor> listview = FXCollections.observableArrayList();
-	
 
-	
-	
-	
-	public void initialize(String CompanyCode) {
-		newSensorPrice.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
-		newSensorSpeed.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
-		newSensorStock.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
-		sensorQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
-		
-		loadTableData();
-		this.CompanyCode = CompanyCode;
-		getCompanyName();
-		
-        
-    }
+	private String CompanyCode;
 
 	private void loadTableData() {
 		sensorTable.getItems().clear();
@@ -134,16 +113,13 @@ public class SensorFormCtr {
 					sensorQty.setEditable(true);
 				}
 			});
-			row.setOnMouseReleased(event -> {
-				sensorName.setText("");
-			});
 			return row;
 		});
 		sensorNameColumn.setCellValueFactory(new PropertyValueFactory<>("SensorName"));
 		sensorPriceColumn.setCellValueFactory(new PropertyValueFactory<>("SensorPrice"));
 		sensorSpeedColumn.setCellValueFactory(new PropertyValueFactory<>("SensorSpeed"));
 		sensorStockColumn.setCellValueFactory(new PropertyValueFactory<>("SensorStock"));
-		
+
 		try {
 			Connection c = DBConnection.getKoneksi();
 			PreparedStatement statement = c.prepareStatement("SELECT * FROM sensors");
@@ -158,8 +134,8 @@ public class SensorFormCtr {
 			e.printStackTrace();
 		}
 	}
-	
-	void loadInterface() {
+
+	public void loadInterface() {
 		this.loadTableData();
 		sensorName.setText("");
 		sensorType.setText("");
@@ -168,18 +144,29 @@ public class SensorFormCtr {
 		sensorStock.setText("");
 		addSensorBttn.setVisible(false);
 		deleteSensorBttn.setVisible(false);
-		sensorQty.setEditable(false);
+		newSensorName.setText("");
+		OpticalRadio.setSelected(false);
+		LaserRadio.setSelected(false);
+		newSensorPrice.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
+		newSensorSpeed.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
+		newSensorStock.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
+		sensorQty.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0));
+	}
+
+	public void passCompanyCode(String companyCode) {
+		this.CompanyCode = companyCode;
 	}
 
 	@FXML
 	void addSensorPressed(ActionEvent event) {
-		if(sensorQty.getValue() <= 0) {
+		if (sensorQty.getValue() <= 0) {
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Number of added stock must be greater than 0.");
-            alert.show();
-		}else {
+			alert.show();
+		} else {
 			try {
 				Connection c = DBConnection.getKoneksi();
-				PreparedStatement statement = c.prepareStatement("UPDATE sensors SET SensorStock = ? WHERE SensorID = ?");
+				PreparedStatement statement = c
+						.prepareStatement("UPDATE sensors SET SensorStock = ? WHERE SensorID = ?");
 				Sensor selected = sensorTable.getSelectionModel().getSelectedItem();
 				statement.setInt(1, selected.getSensorStockInt() + sensorQty.getValue());
 				statement.setString(2, selected.getSensorID());
@@ -188,8 +175,7 @@ public class SensorFormCtr {
 				e.printStackTrace();
 			}
 			Alert alert = new Alert(Alert.AlertType.INFORMATION, "Stock has been added");
-            alert.show();
-            this.loadTableData();
+			alert.show();
 			this.loadInterface();
 		}
 	}
@@ -201,88 +187,67 @@ public class SensorFormCtr {
 			PreparedStatement statement = c.prepareStatement("DELETE FROM sensors WHERE SensorID = ?");
 			Sensor selected = sensorTable.getSelectionModel().getSelectedItem();
 			statement.setString(1, selected.getSensorID());
-			
+			statement.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		Alert alert = new Alert(Alert.AlertType.INFORMATION, "Sensor deleted");
-        alert.show();
-        loadTableData();
+		alert.show();
 		this.loadInterface();
-	}
-	
-	private void getCompanyName() {
-        try {
-        	Connection connection = DBConnection.getKoneksi();
-            PreparedStatement statement = connection.prepareStatement("SELECT CompanyName FROM companies WHERE CompanyCode = ?");
-     		statement.setString(1, CompanyCode);
-     		ResultSet resultSet = statement.executeQuery();
-     		resultSet.next();
-     		if(resultSet.getInt(1) > 0) {
-     			title.setText(resultSet.getString("CompanyName"));
-     		}
-     		
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
 	}
 
 	@FXML
 	void insertNewSensorPressed(ActionEvent event) {
-		
-	
-	    int sensor_speed = newSensorSpeed.getValue();
-	    int sensor_price = newSensorPrice.getValue();
-	    int sensor_stock = newSensorStock.getValue();
-	    String sensor_type = "";
-	    String sensor_name = newSensorName.getText();
-	    if (LaserRadio.isSelected()) {
-	         sensor_type = "Laser";
-	    } else if (OpticalRadio.isSelected()) {
-	    	 sensor_type = "Optical";
-	    }
-	    
-	    
-		if(newSensorName.getText().isEmpty()) {
+
+		int sensor_speed = newSensorSpeed.getValue();
+		int sensor_price = newSensorPrice.getValue();
+		int sensor_stock = newSensorStock.getValue();
+		String sensor_type = "";
+		String sensor_name = newSensorName.getText();
+		if (LaserRadio.isSelected()) {
+			sensor_type = "Laser";
+		} else if (OpticalRadio.isSelected()) {
+			sensor_type = "Optical";
+		}
+
+		if (newSensorName.getText().isEmpty()) {
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Name must be inserted");
-	        alert.show();
+			alert.show();
 		} else if (sensortype.getSelectedToggle() == null) {
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Type must be selected");
-	        alert.show();
+			alert.show();
 		} else if (newSensorSpeed.getValue() <= 500) {
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Speed must be over 500");
-	        alert.show();
+			alert.show();
 		} else if (newSensorPrice.getValue() <= 0) {
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Price must be over 0");
-	        alert.show();
+			alert.show();
 		} else if (newSensorStock.getValue() <= 0) {
 			Alert alert = new Alert(Alert.AlertType.ERROR, "Sensor Stock must be over 0");
-	        alert.show();
+			alert.show();
 		} else {
-			
+
 			try {
-			Connection connection = DBConnection.getKoneksi();
-	        PreparedStatement statement = connection.prepareStatement("INSERT INTO sensors ( SensorName, SensorType, SensorSpeed, SensorPrice, SensorStock, VendorCode) VALUES (?, ?, ?, ?, ?, ?)");
-	        statement.setString(1, sensor_name);
-	        statement.setString(2, sensor_type);
-	        statement.setInt(3, sensor_speed);
-	        statement.setInt(4, sensor_price);
-	        statement.setInt(5, sensor_stock);
-	        statement.setString(6, CompanyCode);
-	        statement.executeUpdate();
-	        
-	        
-	        // Show a success message
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Data has been Inserted successfully.");
-            alert.show();
-            
-            this.loadInterface();
-            
-			}catch (SQLException e  ) {
-    	        e.printStackTrace();
-    	    }
-			
+				Connection connection = DBConnection.getKoneksi();
+				PreparedStatement statement = connection.prepareStatement(
+						"INSERT INTO sensors ( SensorName, SensorType, SensorSpeed, SensorPrice, SensorStock, VendorCode) VALUES (?, ?, ?, ?, ?, ?)");
+				statement.setString(1, sensor_name);
+				statement.setString(2, sensor_type);
+				statement.setInt(3, sensor_speed);
+				statement.setInt(4, sensor_price);
+				statement.setInt(5, sensor_stock);
+				statement.setString(6, CompanyCode);
+				statement.executeUpdate();
+
+				// Show a success message
+				Alert alert = new Alert(Alert.AlertType.INFORMATION, "Data has been Inserted successfully.");
+				alert.show();
+
+				this.loadInterface();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
