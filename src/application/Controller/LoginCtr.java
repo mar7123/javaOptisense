@@ -20,7 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class LoginController {
+public class LoginCtr {
 
     @FXML
     private Button LoginButton;
@@ -83,15 +83,19 @@ public class LoginController {
         }
     }
 
-//    @FXML
-//    void RegisterCompanyHLClicked(ActionEvent event) {
-//
-//    }
-//
-//    @FXML
-//    void RegisterEmployeeHLClicked(ActionEvent event) {
-//
-//    }
+    @FXML
+    void RegisterCompanyHLClicked(ActionEvent event) {
+    	LoginButton.getScene().getWindow().hide();
+        openRegisterCompanyForm();
+
+    }
+
+    @FXML
+    void RegisterEmployeeHLClicked(ActionEvent event) {
+    	LoginButton.getScene().getWindow().hide();
+        openRegisterEmployeeForm();
+
+    }
     
     private void openHomeForm(boolean vendor) {
         // code to open the home form
@@ -104,6 +108,34 @@ public class LoginController {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setTitle("Home Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void openRegisterCompanyForm() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/RegisterCompany.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Register Company Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void openRegisterEmployeeForm() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/RegisterEmployee.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Register Employee Form");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
